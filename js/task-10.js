@@ -3,20 +3,39 @@ function getRandomHexColor() {
 }
 
 const refs = {
+  controlsEl: document.querySelector('#controls'),
   btnCreate: document.querySelector('[data-create]'),
   btnDestroy: document.querySelector('[data-destroy]'),
   boxesEl: document.querySelector('#boxes'),
   inputEl: document.querySelector('input'),
-
 };
 
-console.log(refs)
+const onClick = () => {
+  const amount = refs.inputEl.valueAsNumber;
+  if (!amount) { return }
+  const arrayBoxes = createBoxes(amount);
+  addArrayBoxes(arrayBoxes);
+ };
 
+const createBoxes = (amount) => {
+   const arrayBoxes = [];
+  let size = 30;
+  for (let i = 0; i < amount; i++) {
+    const element = `<div class="box-item" style = "width: ${size}px; height: ${size}px; background: ${getRandomHexColor()}"></div>`;
+    arrayBoxes.push(element);
+    size += 10;
+  }
+  return arrayBoxes.join('');
+};
 
-  // <div id="controls">
-  //     <input type="number" min="1" max="100" step="1" />
-  //     <button type="button" data-create>Create</button>
-  //     <button type="button" data-destroy>Destroy</button>
-  //   </div>
+const addArrayBoxes = (arrayBoxes = []) => { 
+  refs.boxesEl.innerHTML = arrayBoxes;
+};
 
-  //   <div id="boxes"></div>
+const destroyBoxes = () => { 
+  addArrayBoxes();
+  refs.inputEl.value = '';
+};
+
+refs.btnCreate.addEventListener('click', onClick);
+refs.btnDestroy.addEventListener('click', destroyBoxes);
